@@ -1,0 +1,20 @@
+{
+  "name": "atbm",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.js",
+  "bin": {
+    "atbm": "src/atbm.js"
+  },
+  "type": "module",
+  "scripts": {
+    "dev": "node src/atbm.js"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@cosmjs/stargate": "^0.31.0",
+    "axios": "^1.4.0",
+    "commander": "^11.0.0"
+  }
+}
