@@ -14,6 +14,22 @@ export const DENOM = {
     unit: "ATOM",
     value: 0.000001,
   },
+  token: {
+    unit: "token",
+    value: 1,
+  },
+  stake: {
+    unit: "stake",
+    value: 1,
+  },
+  "ibc/B5CB286F69D48B2C4F6F8D8CF59011C40590DCF8A91617A5FBA9FF0A7B21307F": {
+    unit: "token",
+    value: 1,
+  },
+  "ibc/C053D637CCA2A2BA030E2C5EE1B28A16F71CCB0E45E8BE52766DC1B241B77878": {
+    unit: "stake",
+    value: 1,
+  },
 };
 
 export const CHAIN = {

@@ -67,9 +67,7 @@ program
     }
 
     console.log(`Transfering...`);
-    const { fee, unit } = await transfer(fromWalletInfo, ...args);
-
-    console.log(`✔ Fee: ${fee} ${unit}`);
+    await transfer(fromWalletInfo, ...args);
     console.log(`✔ Done`);
   });
 

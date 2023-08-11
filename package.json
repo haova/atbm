@@ -8,7 +8,10 @@
   },
   "type": "module",
   "scripts": {
-    "dev": "node src/atbm.js"
+    "dev": "node src/atbm.js",
+    "docker:build": "cd chains && sudo ./build-images.sh",
+    "docker:start-net": "sudo docker compose -f simple.yml --profile go up --build",
+    "docker:clean": "sudo docker rm $(sudo docker ps -aq)"
   },
   "author": "",
   "license": "MIT",

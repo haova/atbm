@@ -1,0 +1,2 @@
+docker build -f Dockerfile . -t chaina --build-arg configyml=./configa.yml --build-arg prefix=chaina --no-cache
+docker build -f Dockerfile . -t chainb --build-arg configyml=./configb.yml --build-arg prefix=chainb --no-cache

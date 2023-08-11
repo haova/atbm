@@ -1,0 +1,35 @@
+version: "3"
+
+services:
+  chaina:
+    container_name: chaina
+    image: "chaina"
+    ports:
+      - "26657:26657"
+      - "1317:1317"
+      - "4500:4500"
+    networks:
+      - tokendemo
+
+  chainb:
+    container_name: chainb
+    image: "chainb"
+    ports:
+      - "26658:26657"
+      - "1318:26657"
+      - "4501:26657"
+    networks:
+      - tokendemo
+
+  relayer_go:
+    profiles: ["go"]
+    build: ./relayer_go
+    container_name: relayer
+    image: "relayer_go"
+    tty: true
+    stdin_open: true
+    networks:
+      - tokendemo
+
+networks:
+  tokendemo:

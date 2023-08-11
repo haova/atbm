@@ -1,4 +1,5 @@
 import { DirectSecp256k1HdWallet } from "@cosmjs/proto-signing";
+import { calculateFee } from "@cosmjs/stargate";
 import { CHAIN, DENOM } from "./constants.js";
 import {
   listWallet,
@@ -58,32 +59,42 @@ const normalTransfer = async (
   const wallet = await getWallet(recovery, prefix);
   const signingClient = await lookupSignerClient(fromAddress, wallet);
   const transferAmount = { denom, amount: amount.toString() };
+  const fee = amount * 0.005;
+  const feeRecord = {
+    amount: [{ denom, amount: (fee < 1 ? 1 : fee).toString() }],
+    gas: (200000).toString(),
+  };
 
+  let result;
   if (isSameClient) {
-    const fee = amount * 0.005;
-    const { gasUsed } = await signingClient.sendTokens(
+    result = await signingClient.sendTokens(
       fromAddress,
       toAddress,
       [transferAmount],
-      {
-        amount: [{ denom, amount: (fee < 1 ? 1 : fee).toString() }],
-        gas: (200000).toString(),
-      }
+      feeRecord
     );
-
-    return {
-      fee: gasUsed * (DENOM[denom]?.value || 1),
-      unit: DENOM[denom]?.unit || denom,
-    };
+  } else {
+    result = await signingClient.sendIbcTokens(
+      fromAddress,
+      toAddress,
+      transferAmount,
+      "transfer",
+      "channel-0",
+      {
+        revisionHeight: 123,
+        revisionNumber: 456,
+      },
+      Math.floor(Date.now() / 1000) + 60,
+      feeRecord
+    );
   }
 
-  const broadcastResult = await signingClient.sendIbcTokens(
-    fromAddress,
-    toAddress,
-    transferAmount,
-    "transfer"
-  );
-  console.log(broadcastResult);
+  const { gasUsed } = result;
+
+  return {
+    fee: gasUsed * (DENOM[denom]?.value || 1),
+    unit: DENOM[denom]?.unit || denom,
+  };
 };
 
 export const transfer = async (fromWallet, toAddress, amount, unit) => {
